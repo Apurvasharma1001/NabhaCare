@@ -113,6 +113,10 @@ export interface Patient {
   effectivePriority?: PriorityLevel;
   isStarvationAdjusted?: boolean;
   queueStatus: PatientQueueStatus;
+
+  // Patient-reported & AI-generated intake data
+  patientRawText?: string;   // Verbatim message/text sent by patient (SMS/app)
+  aiSummary?: string;        // AI-refined clinical summary of patient's complaint
   
   // Longitudinal records
   medicalHistory: MedicalHistorySummary;

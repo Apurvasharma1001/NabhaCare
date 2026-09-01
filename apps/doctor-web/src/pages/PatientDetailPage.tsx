@@ -18,7 +18,6 @@ import {
 } from 'lucide-react';
 import { useApp } from '../context/AppContext';
 import { PriorityBadge } from '../components/ui/PriorityBadge';
-import { SourceBadge } from '../components/ui/SourceBadge';
 import { ConsultationCard } from '../components/ConsultationCard';
 import { PrescriptionCard } from '../components/PrescriptionCard';
 import { ReportCard } from '../components/ReportCard';
@@ -171,23 +170,21 @@ export const PatientDetailPage: React.FC = () => {
                 />
               </div>
 
-              <div className="flex flex-wrap items-center gap-3 text-xs text-slate-500 mt-2">
-                <span>
-                  <strong>{patient.age}</strong> Years, {patient.gender}
-                </span>
-                <span>•</span>
-                <span className="flex items-center gap-1">
-                  <MapPin className="w-3.5 h-3.5 text-slate-400" />
-                  {patient.village}
-                </span>
-                <span>•</span>
-                <span className="flex items-center gap-1">
-                  <Phone className="w-3.5 h-3.5 text-slate-400" />
-                  {patient.phone}
-                </span>
-                <span>•</span>
-                <SourceBadge source={patient.source} size="sm" />
-              </div>
+                <div className="flex flex-wrap items-center gap-3 text-xs text-slate-500 mt-2">
+                  <span>
+                    <strong>{patient.age}</strong> Years, {patient.gender}
+                  </span>
+                  <span>•</span>
+                  <span className="flex items-center gap-1">
+                    <MapPin className="w-3.5 h-3.5 text-slate-400" />
+                    {patient.village}
+                  </span>
+                  <span>•</span>
+                  <span className="flex items-center gap-1">
+                    <Phone className="w-3.5 h-3.5 text-slate-400" />
+                    {patient.phone}
+                  </span>
+                </div>
             </div>
           </div>
 
@@ -257,25 +254,57 @@ export const PatientDetailPage: React.FC = () => {
           {activeTab === 'overview' && (
             <div className="space-y-6">
               {/* Current Consultation Card */}
-              <div className="bg-gradient-to-br from-blue-50/80 via-white to-slate-50 rounded-xl border border-blue-200 p-5 shadow-2xs">
-                <div className="flex items-center justify-between pb-3 border-b border-blue-100">
+              <div className="rounded-xl border border-slate-200 shadow-2xs overflow-hidden">
+                <div className="bg-slate-50 border-b border-slate-200 px-5 py-3 flex items-center justify-between">
                   <div className="flex items-center gap-2">
                     <Activity className="w-4 h-4 text-blue-600" />
-                    <h3 className="text-xs font-bold text-blue-950 uppercase tracking-wider">
-                      Current Visit Triage Summary (Today)
+                    <h3 className="text-xs font-bold text-slate-900 uppercase tracking-wider">
+                      Current Visit — Patient Intake
                     </h3>
                   </div>
                   <span className="text-[11px] font-semibold text-blue-700 bg-blue-100/60 px-2 py-0.5 rounded">
-                    Token {patient.tokenNumber} • {patient.source}
+                    Token {patient.tokenNumber}
                   </span>
                 </div>
 
-                <div className="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
-                  <div>
-                    <span className="font-bold text-slate-500 text-[11px] uppercase">
-                      Reported Symptoms & Duration
-                    </span>
-                    <div className="flex flex-wrap gap-1.5 mt-1.5">
+                <div className="divide-y divide-slate-100">
+                  {/* Panel 1: Patient's own words */}
+                  <div className="p-5">
+                    <div className="flex items-center gap-1.5 mb-2">
+                      <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">1 — Patient's Message</span>
+                      <span className="text-[10px] bg-slate-100 text-slate-500 px-1.5 py-0.5 rounded font-medium">Verbatim</span>
+                    </div>
+                    {patient.patientRawText ? (
+                      <p className="text-xs text-slate-800 italic leading-relaxed bg-amber-50 border border-amber-200 rounded-lg px-4 py-3">
+                        "{patient.patientRawText}"
+                      </p>
+                    ) : (
+                      <p className="text-xs text-slate-400 italic">No patient message recorded.</p>
+                    )}
+                  </div>
+
+                  {/* Panel 2: AI Refined Summary */}
+                  <div className="p-5">
+                    <div className="flex items-center gap-1.5 mb-2">
+                      <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">2 — AI Refined Summary</span>
+                      <span className="text-[10px] bg-blue-100 text-blue-700 px-1.5 py-0.5 rounded font-bold">✦ AI</span>
+                    </div>
+                    {patient.aiSummary ? (
+                      <p className="text-xs text-slate-700 leading-relaxed bg-blue-50 border border-blue-200 rounded-lg px-4 py-3">
+                        {patient.aiSummary}
+                      </p>
+                    ) : (
+                      <p className="text-xs text-slate-400 italic">No AI summary available.</p>
+                    )}
+                  </div>
+
+                  {/* Panel 3: Extracted Keywords + Triage */}
+                  <div className="p-5">
+                    <div className="flex items-center gap-1.5 mb-2">
+                      <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">3 — Extracted Keywords</span>
+                      <span className="text-[10px] bg-emerald-100 text-emerald-700 px-1.5 py-0.5 rounded font-medium">Reported Symptoms</span>
+                    </div>
+                    <div className="flex flex-wrap gap-1.5 mb-3">
                       {patient.symptoms.map((sym, idx) => (
                         <span
                           key={idx}
@@ -285,26 +314,19 @@ export const PatientDetailPage: React.FC = () => {
                         </span>
                       ))}
                     </div>
-                    <p className="text-xs text-slate-600 mt-2">
-                      Symptom Duration: <strong>{patient.symptomDuration}</strong>
+                    <p className="text-xs text-slate-500">
+                      Duration: <strong className="text-slate-700">{patient.symptomDuration}</strong>
                     </p>
-                  </div>
 
-                  {/* AI / Rule-based Triage Recommendation */}
-                  <div className="bg-white p-3.5 rounded-lg border border-blue-200 shadow-2xs">
-                    <div className="flex items-center gap-1.5 text-xs font-bold text-blue-900">
-                      <ShieldAlert className="w-4 h-4 text-amber-600 shrink-0" />
-                      <span>AI / Rule-based Triage Recommendation</span>
+                    {/* AI Triage inline */}
+                    <div className="mt-3 bg-white border border-blue-200 rounded-lg p-3 flex items-start gap-2 shadow-2xs">
+                      <ShieldAlert className="w-4 h-4 text-amber-600 shrink-0 mt-0.5" />
+                      <div>
+                        <p className="text-xs font-bold text-red-700">{patient.triageRecommendation}</p>
+                        <p className="text-[11px] text-slate-600 mt-0.5 leading-relaxed">{patient.triageReason}</p>
+                        <p className="text-[10px] text-slate-400 italic mt-1.5">* Urgency recommendation to assist queue — not a medical diagnosis.</p>
+                      </div>
                     </div>
-                    <p className="mt-1 text-xs font-bold text-red-700">
-                      {patient.triageRecommendation}
-                    </p>
-                    <p className="text-[11px] text-slate-600 mt-1 leading-relaxed">
-                      {patient.triageReason}
-                    </p>
-                    <p className="text-[10px] text-slate-400 italic mt-2 border-t border-slate-100 pt-1">
-                      * Urgency recommendation to assist queue organization — not a medical diagnosis.
-                    </p>
                   </div>
                 </div>
               </div>

@@ -110,53 +110,43 @@ export const PrescriptionBuilder: React.FC<PrescriptionBuilderProps> = ({
         </div>
       </div>
 
-      {/* Medicines Table */}
-      <div className="overflow-x-auto">
-        <table className="w-full text-left text-xs border-collapse">
-          <thead>
-            <tr className="text-[11px] font-bold text-slate-500 border-b border-slate-200 bg-slate-50">
-              <th className="py-2.5 px-3">#</th>
-              <th className="py-2.5 px-3">Medicine Name & Formulation</th>
-              <th className="py-2.5 px-3">Dosage</th>
-              <th className="py-2.5 px-3">Frequency</th>
-              <th className="py-2.5 px-3">Duration</th>
-              <th className="py-2.5 px-3">Instructions</th>
-              <th className="py-2.5 px-3 text-right">Action</th>
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-slate-100">
-            {medicines.length === 0 ? (
-              <tr>
-                <td colSpan={7} className="py-6 text-center text-slate-400 text-xs">
-                  No medicines added to this prescription yet. Use presets above or click '+ Add Custom Medicine'.
-                </td>
-              </tr>
-            ) : (
-              medicines.map((med, index) => (
-                <tr key={med.id || index} className="hover:bg-slate-50/50">
-                  <td className="py-2.5 px-3 text-slate-400 font-mono text-[11px]">{index + 1}</td>
-                  <td className="py-2.5 px-3 font-bold text-slate-900">{med.name}</td>
-                  <td className="py-2.5 px-3 font-semibold text-blue-700 bg-blue-50/40 rounded">
-                    {med.dosage}
-                  </td>
-                  <td className="py-2.5 px-3 text-slate-700">{med.frequency}</td>
-                  <td className="py-2.5 px-3 text-slate-700">{med.duration}</td>
-                  <td className="py-2.5 px-3 text-slate-500 italic">{med.instructions}</td>
-                  <td className="py-2.5 px-3 text-right">
-                    <button
-                      type="button"
-                      onClick={() => handleRemoveMedicine(med.id)}
-                      className="p-1 text-red-500 hover:text-red-700 hover:bg-red-50 rounded transition-colors"
-                      title="Remove Medicine"
-                    >
-                      <Trash2 className="w-3.5 h-3.5" />
-                    </button>
-                  </td>
-                </tr>
-              ))
-            )}
-          </tbody>
-        </table>
+      {/* Medicines List — Card per Medicine */}
+      <div className="space-y-2">
+        {medicines.length === 0 ? (
+          <div className="py-6 text-center text-slate-400 text-xs bg-slate-50 rounded-xl border border-dashed border-slate-200">
+            No medicines added yet. Use presets above or click '+ Add Custom Medicine'.
+          </div>
+        ) : (
+          medicines.map((med, index) => (
+            <div
+              key={med.id || index}
+              className="flex items-start justify-between gap-3 bg-slate-50 hover:bg-blue-50/40 border border-slate-200 rounded-lg px-4 py-3 transition-colors"
+            >
+              <div className="flex items-start gap-3 min-w-0">
+                <span className="text-[11px] font-mono font-bold text-slate-400 pt-0.5 shrink-0 w-5">
+                  {index + 1}.
+                </span>
+                <div className="min-w-0">
+                  <div className="font-bold text-slate-900 text-xs">{med.name}</div>
+                  <div className="text-[11px] text-blue-700 font-semibold mt-0.5">
+                    {med.dosage} &nbsp;·&nbsp; {med.frequency} &nbsp;·&nbsp; {med.duration}
+                  </div>
+                  {med.instructions && (
+                    <div className="text-[11px] text-slate-500 italic mt-0.5">{med.instructions}</div>
+                  )}
+                </div>
+              </div>
+              <button
+                type="button"
+                onClick={() => handleRemoveMedicine(med.id)}
+                className="p-1 text-red-400 hover:text-red-700 hover:bg-red-50 rounded transition-colors shrink-0 mt-0.5"
+                title="Remove Medicine"
+              >
+                <Trash2 className="w-3.5 h-3.5" />
+              </button>
+            </div>
+          ))
+        )}
       </div>
 
       {/* Add Custom Medicine Form */}

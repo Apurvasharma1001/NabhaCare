@@ -111,11 +111,9 @@ export const PrescriptionPreview: React.FC<PrescriptionPreviewProps> = ({
             <table className="w-full text-left text-xs border-collapse border border-slate-200">
               <thead>
                 <tr className="bg-blue-900 text-white text-[11px]">
-                  <th className="py-2 px-3 border border-blue-800">#</th>
+                  <th className="py-2 px-3 border border-blue-800 w-8">#</th>
                   <th className="py-2 px-3 border border-blue-800">Medicine Name</th>
-                  <th className="py-2 px-3 border border-blue-800">Dosage</th>
-                  <th className="py-2 px-3 border border-blue-800">Frequency</th>
-                  <th className="py-2 px-3 border border-blue-800">Duration</th>
+                  <th className="py-2 px-3 border border-blue-800">Dose &amp; Schedule</th>
                   <th className="py-2 px-3 border border-blue-800">Instructions</th>
                 </tr>
               </thead>
@@ -124,9 +122,9 @@ export const PrescriptionPreview: React.FC<PrescriptionPreviewProps> = ({
                   <tr key={index} className="hover:bg-slate-50">
                     <td className="py-2 px-3 border border-slate-200 font-mono text-slate-500">{index + 1}</td>
                     <td className="py-2 px-3 border border-slate-200 font-bold text-slate-900">{med.name}</td>
-                    <td className="py-2 px-3 border border-slate-200 font-semibold text-blue-800">{med.dosage}</td>
-                    <td className="py-2 px-3 border border-slate-200">{med.frequency}</td>
-                    <td className="py-2 px-3 border border-slate-200">{med.duration}</td>
+                    <td className="py-2 px-3 border border-slate-200 text-blue-800 font-semibold">
+                      {med.dosage} · {med.frequency} · {med.duration}
+                    </td>
                     <td className="py-2 px-3 border border-slate-200 italic text-slate-600">{med.instructions}</td>
                   </tr>
                 ))}

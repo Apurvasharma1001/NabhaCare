@@ -69,7 +69,7 @@ interface AppContextType {
 const AppContext = createContext<AppContextType | undefined>(undefined);
 
 const LOCAL_STORAGE_KEYS = {
-  PATIENTS: 'nabha_telemed_patients_v1',
+  PATIENTS: 'nabha_telemed_patients_v2',   // bumped: new patientRawText + aiSummary fields
   DOCTOR: 'nabha_telemed_doctor_v1',
   AVAILABILITY: 'nabha_telemed_availability_v1',
   NOTIFICATIONS: 'nabha_telemed_notifications_v1',

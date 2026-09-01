@@ -255,7 +255,7 @@ export const QueuePage: React.FC = () => {
           {/* Status Filter */}
           <div className="flex items-center gap-1.5 flex-wrap ml-auto">
             <span className="text-[11px] font-bold text-slate-500 uppercase">Status:</span>
-            {['Waiting', 'In Consultation', 'Completed', 'ALL'].map((st) => (
+            {['Waiting', 'Completed', 'ALL'].map((st) => (
               <button
                 key={st}
                 onClick={() => setSelectedStatus(st)}
