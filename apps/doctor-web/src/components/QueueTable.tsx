@@ -2,7 +2,6 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import type { Patient } from '../types';
 import { PriorityBadge } from './ui/PriorityBadge';
-import { SourceBadge } from './ui/SourceBadge';
 import { Play, Eye, Clock, MapPin } from 'lucide-react';
 
 interface QueueTableProps {
@@ -31,7 +30,6 @@ export const QueueTable: React.FC<QueueTableProps> = ({ patients }) => {
               <th className="py-3 px-4">Token</th>
               <th className="py-3 px-4">Patient Info</th>
               <th className="py-3 px-4">Priority / Triage</th>
-              <th className="py-3 px-4">Channel</th>
               <th className="py-3 px-4">Arrival</th>
               <th className="py-3 px-4">Wait Time</th>
               <th className="py-3 px-4">Chief Complaint / Symptoms</th>
@@ -75,11 +73,6 @@ export const QueueTable: React.FC<QueueTableProps> = ({ patients }) => {
                     effectivePriority={patient.effectivePriority}
                     isStarvationAdjusted={patient.isStarvationAdjusted}
                   />
-                </td>
-
-                {/* Channel */}
-                <td className="py-3 px-4">
-                  <SourceBadge source={patient.source} />
                 </td>
 
                 {/* Arrival Time */}
@@ -182,8 +175,6 @@ export const QueueTable: React.FC<QueueTableProps> = ({ patients }) => {
             </div>
 
             <div className="flex flex-wrap items-center gap-2 text-xs text-slate-600">
-              <SourceBadge source={patient.source} size="sm" />
-              <span>•</span>
               <span>Wait: <strong>{patient.waitingMinutes}m</strong></span>
               <span>•</span>
               <span className="truncate">Symptoms: {patient.symptoms.join(', ')}</span>
